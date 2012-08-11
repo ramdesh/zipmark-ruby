@@ -61,7 +61,7 @@ class ZipMark
   # We need to get a response with a WWW-Authenticate request header
   def get_response(uri)
     url = BASE_URL + uri
-    uri = URI.parse(url)
+    @uri = URI.parse(url)
     h = Net::HTTP.new uri.host, uri.port
     req = Net::HTTP::Get.new uri.request_uri
     response = h.request req
@@ -71,6 +71,9 @@ class ZipMark
   
   def get_approval_rules() 
     build_header('/approval_rules', 'GET')
+    net = Net::HTTP.new(@uri.host,@uri.port)
+    request = Net::HTTP::Get.new(@uri.request_uri)
+    
   end
 end
 
