@@ -50,10 +50,12 @@ class ZipMark
     header << "uri=\"#{@path}\""
     header << "nonce=\"#{params['nonce']}\""
     header << "nc=#{'%08x' % @@nonce_count}"
-    header << "cnonce=\"#{CNONCE}\""
+    header << "cnonce=\"#{@cnonce}\""
     header << "response=\"#{Digest::MD5.new(request_digest).hexdigest}\""
 
     @header['Authorization'] = header
+    @header['Content-Type'] = 'application/json'
+    @header['Accept'] = 'application/vnd.com.zipmark.v1+json'
   end
 
   # We need to get a response with a WWW-Authenticate request header
@@ -65,6 +67,10 @@ class ZipMark
     response = h.request req
 
     return response
+  end
+  
+  def get_approval_rules() 
+    build_header('/approval_rules', 'GET')
   end
 end
 
