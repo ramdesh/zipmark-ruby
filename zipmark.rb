@@ -2,6 +2,7 @@ require "rubygems"
 require "net/http"
 require "uri"
 require "digest/md5"
+require "json"
 
 # Curdbee app_id/username: ZmM4ZDk4NGYtYjljNy00NGFkLWFjMDctZGUzMjgwMTM1MDBj
 # Curdbee app_secret/password: d30468fca5bceed398ca9e684d2f57cae3a38abea397a7d73c71a928d0176902a40652f2db99ec33b778bfc6fbd5a6d76e5c8dccdd11aba7ce97cf1d83fb334b
@@ -10,6 +11,7 @@ class ZipMark
   include Net::HTTP
   include Digest::MD5
   include URI
+  include JSON
   BASE_URL = "https://sandbox.zipmark.com"
   REALM = "Zipmark"
   @@nonce_count = -1
@@ -73,7 +75,19 @@ class ZipMark
     build_header('/approval_rules', 'GET')
     net = Net::HTTP.new(@uri.host,@uri.port)
     request = Net::HTTP::Get.new(@uri.request_uri)
+    response = net.request(request)
+    response = JSON.parse(response)
+    return response
     
+  end
+  
+  def get_vendor_relationships()
+    build_header('/vendor_relationships', 'GET')
+    net = Net::HTTP.new(@uri.host,@uri.port)
+    request = Net::HTTP::Get.new(@uri.request_uri)
+    response = net.request(request)
+    response = JSON.parse(response)
+    return response
   end
 end
 
