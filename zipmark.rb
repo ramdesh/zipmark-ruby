@@ -33,7 +33,7 @@ class ZipMark
     params = {}
     challenge.gsub(/(\w+)="(.*?)"/) { params[$1] = $2 }
     
-    a_1 = "#{@app_id}:#{REALM}:#{@app_secret}" #username, realm and password
+    a_1 = "#{@app_id}:#{params['realm']}:#{@app_secret}" #username, realm and password
     a_2 = "#{httpmethod}:#{uri}" #method and path
     request_digest = ''
     request_digest << Digest::MD5.hexdigest(a_1)
@@ -45,9 +45,9 @@ class ZipMark
 
     header = []
     header << "Digest username=\"#{@app_id}\""
-    header << "realm=\"#{REALM}\""
+    header << "realm=\"#{params['realm']}\""
 
-    header << "qop=#{params['qop']}"
+    header << "qop=\"#{params['qop']}\""
 
     header << "algorithm=MD5"
     header << "uri=\"#{uri}\""
@@ -55,13 +55,14 @@ class ZipMark
     header << "nc=#{'%08x' % @@nonce_count}"
     header << "cnonce=\"#{@cnonce}\""
     header << "response=\"#{Digest::MD5.hexdigest(request_digest)}\""
+    header << "opaque=\"#{params['opaque']}\""
 
     header_str = header.join(', ')
     @header = {}
     @header["Authorization"] = header_str
     @header["Content-Type"] = "application/json"
     @header["Accept"] = "application/vnd.com.zipmark.v1+json"
-    @header["Host"] = "example.org"
+    @header["Host"] = "curdbee.com"
   end
   
   # Build request (allows reuse)
@@ -86,9 +87,11 @@ class ZipMark
   def get_approval_rules() 
     build_header_auth('/approval_rules', 'GET')
     request = build_request()
+    puts "Request headers\n"
     @header.each do |name, value|
       request.add_field(name, value)
-      #puts name+": "+value
+      
+      puts name+": "+value
     end
     response = @http.request(request)
     #response = JSON.parse(response)
