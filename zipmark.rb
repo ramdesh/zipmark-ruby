@@ -70,14 +70,15 @@ class ZipMark
     @http = Net::HTTP.new(@uri.host, @uri.port)
     @http.use_ssl = true
     @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    req = Net::HTTP::Get.new(@uri.request_uri)
+    
   end
   
   # We need to get a response with a WWW-Authenticate request header
   def get_auth_response(uri)
     url = BASE_URL + uri
     @uri = URI.parse(url)
-    req = build_request()
+    build_request()
+    req = Net::HTTP::Get.new(@uri.request_uri)
     response = @http.request(req)
 
     return response
@@ -86,7 +87,8 @@ class ZipMark
   # Method to get approval rules
   def get_approval_rules() 
     build_header_auth('/approval_rules', 'GET')
-    request = build_request()
+    build_request()
+    request = Net::HTTP::Get.new(@uri.request_uri)
     #puts "Request headers\n"
     @header.each do |name, value|
       request.add_field(name, value)
@@ -102,12 +104,38 @@ class ZipMark
   # Method to get vendor relationships
   def get_vendor_relationships()
     build_header_auth('/vendor_relationships', 'GET')
-    request = build_request()
+    build_request()
+    request = Net::HTTP::Get.new(@uri.request_uri)
     @header.each do |name, value|
       request.add_field(name, value)
     end
     response = @http.request(request)
     #response = JSON.parse(response)
+    return response
+  end
+  
+  # Create a bill
+  # Params should be formatted as follows:
+  # id, amount_cents, bill_template_id, memo, content, recurring, customer_id, date
+  def create_bill(params)
+    build_header_auth('/bills', 'POST')
+    build_request()
+    p_hash = {}
+    p_hash["bill"] = {"identifier"=>params['id'],
+                      "amount_cents"=>params['amount_cents'],
+                      "bill_template_id"=>params['bill_template_id'],
+                      "memo"=>params['memo'],
+                      "content"=>params['content'],
+                      "recurring"=>params['recurring'],
+                      "customer_id"=>params['customer_id'],
+                      "date"=>params['date']}
+    req_body = p_hash.to_json.to_s
+    request = Net::HTTP::Post.new(@uri.request_uri)
+    @header.each do |name, value|
+      request.add_field(name, value)
+    end
+    request.set_body_internal(req_body)
+    response = @http.request(request)
     return response
   end
 end
