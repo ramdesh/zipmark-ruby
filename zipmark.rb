@@ -38,16 +38,16 @@ class ZipMark
     request_digest = ''
     request_digest << Digest::MD5.hexdigest(a_1)
     request_digest << ':' << params['nonce']
-    #request_digest << ':' << ('%08x' % @@nonce_count)
-    #request_digest << ':' << @cnonce
-    #request_digest << ':' << params['qop']
+    request_digest << ':' << ('%08x' % @@nonce_count)
+    request_digest << ':' << @cnonce
+    request_digest << ':' << params['qop']
     request_digest << ':' << Digest::MD5.hexdigest(a_2)
 
     header = []
     header << "Digest username=\"#{@app_id}\""
     header << "realm=\"#{params['realm']}\""
 
-    header << "qop=\"#{params['qop']}\""
+    header << "qop=#{params['qop']}"
 
     header << "algorithm=MD5"
     header << "uri=\"#{uri}\""
@@ -87,11 +87,11 @@ class ZipMark
   def get_approval_rules() 
     build_header_auth('/approval_rules', 'GET')
     request = build_request()
-    puts "Request headers\n"
+    #puts "Request headers\n"
     @header.each do |name, value|
       request.add_field(name, value)
       
-      puts name+": "+value
+      #puts name+": "+value
     end
     response = @http.request(request)
     #response = JSON.parse(response)
@@ -116,7 +116,7 @@ APP_SECRET = 'd30468fca5bceed398ca9e684d2f57cae3a38abea397a7d73c71a928d0176902a4
 # example implementation
 zipmark = ZipMark.new(APP_ID,APP_SECRET)
 #response = zipmark.get_auth_response('/approval_rules')
-response = zipmark.get_approval_rules()
+response = zipmark.get_vendor_relationships()
 response.each do |name, value|
   puts name + " : " + value
 end
