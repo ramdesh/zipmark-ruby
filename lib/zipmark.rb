@@ -64,8 +64,7 @@ class ZipMark
     @header["Authorization"] = header_str
     @header["Host"] = "curdbee.com"
   end
-  private:build_header_auth
-  
+  private:build_header_auth 
   # Build request (allows reuse)
   def build_request()
     @http = Net::HTTP.new(@uri.host, @uri.port)
@@ -97,6 +96,9 @@ class ZipMark
       request.add_field(name, value)
       
       #puts name+": "+value
+    end
+    request.each do |name, value|
+      puts name+" : "+value
     end
     response = @http.request(request)
     #response = JSON.parse(response)
@@ -140,5 +142,9 @@ class ZipMark
     request.set_body_internal(req_body)
     response = @http.request(request)
     return response
+  end
+  
+  # Bill callback request
+  def bill_callback()
   end
 end
