@@ -12,7 +12,6 @@ end
 puts response.body
 params = {"id"=>"0001",
           "amount_cents"=>"5000",
-          "bill_template_id"=>"c259b026-9838-4a86-811b-21de2ad39946",
           "memo"=> "Memoize",
           "content"=> "{\"memo\":\"Other content\"}",
           "recurring"=> false,
