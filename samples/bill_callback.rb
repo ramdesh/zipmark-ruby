@@ -18,7 +18,7 @@ params = {"amount_cents"=> 5000,
           "payee"=> "CurdBee Team",
           "bill_encoded_id"=> "3cce63c674bc6ab5067e85accb063b3b3a67"
          }
-response = zipmark.bill_callback(params, ZipMark.API_VERSION_1)
+response = zipmark.bill_callback(params, ZipMark::API_VERSION_2)
 response.each do |name, value|
   puts name + " : " + value
 end
