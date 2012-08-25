@@ -5,6 +5,7 @@ require "uri"
 require "digest/md5"
 require "json"
 require "openssl"
+require "../lib/config.rb"
 
 # Curdbee app_id/username: ZmM4ZDk4NGYtYjljNy00NGFkLWFjMDctZGUzMjgwMTM1MDBj
 # Curdbee app_secret/password: d30468fca5bceed398ca9e684d2f57cae3a38abea397a7d73c71a928d0176902a40652f2db99ec33b778bfc6fbd5a6d76e5c8dccdd11aba7ce97cf1d83fb334b
@@ -92,6 +93,7 @@ class ZipMark
   end
   private:get_auth_response
 
+  #-----------------------START PUBLIC METHODS---------------------------------#
   # Method to get approval rules
   def get_approval_rules()
     build_header_auth('/approval_rules', API_VERSION_1, 'GET')
@@ -105,7 +107,7 @@ class ZipMark
     end
 
     response = @http.request(request)
-    #response = JSON.parse(response)
+    # response.body = JSON.parse(response.body)
     return response
 
   end
@@ -119,7 +121,7 @@ class ZipMark
       request[name] = value
     end
     response = @http.request(request)
-    #response = JSON.parse(response)
+    # response.body = JSON.parse(response.body)
     return response
   end
 
@@ -148,6 +150,7 @@ class ZipMark
       # end
       request.set_body_internal(req_body)
       response = @http.request(request)
+      # response.body = JSON.parse(response.body)
       return response
     end
 
@@ -194,6 +197,7 @@ class ZipMark
         end
         request.set_body_internal(req_body)
         response = @http.request(request)
+        # response.body = JSON.parse(response.body)
         return response
       end
     end

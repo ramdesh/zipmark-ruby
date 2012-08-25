@@ -1,0 +1,5 @@
+--- 
+open_files: 
+  - lib/zipmark.rb
+  - lib/config.rb
+  - samples/create_bill.rb

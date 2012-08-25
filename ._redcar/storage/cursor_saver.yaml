@@ -1,0 +1,23 @@
+--- 
+cursor_positions: 
+  - :path: samples/bill_callback.rb
+    :cursor_offset: 100
+    :timestamp: 2012-08-25 23:43:22.325000 +05:30
+  - :path: samples/get_approval_rules.rb
+    :cursor_offset: 124
+    :timestamp: 2012-08-25 23:42:55.515000 +05:30
+  - :path: samples/get_vendor_relationships.rb
+    :cursor_offset: 251
+    :timestamp: 2012-08-25 23:42:58.458000 +05:30
+  - :path: lib/zipmark.rb
+    :cursor_offset: 663
+    :timestamp: 2012-08-25 23:37:41.591000 +05:30
+  - :path: lib/config.rb
+    :cursor_offset: 45
+    :timestamp: 2012-08-25 23:42:57.947000 +05:30
+    :selection_offset: 61
+    :block_selection_mode: false
+  - :path: samples/create_bill.rb
+    :cursor_offset: 125
+    :timestamp: 2012-08-25 23:43:43.780000 +05:30
+files_to_retain: 0
